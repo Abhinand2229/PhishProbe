@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="container">
+
+        <a href="/" class="logo">
+            <h1 itemprop="name">PhishProbe</h1>
+        </a>
+
+        <div class="short-note">
+            <p itemprop="description">Protect yourself from <strong>phishing attacks.</strong></p>
+        </div>
+
+        <form action="/" method="post">
+            <input type="text" name="url" placeholder="URL" required="required" />
+            <button type="submit" class="btn" onclick="showLoadingSpinner()">Verify URL</button>
+        </form>
+
+        {% if output != "NA" %}
+            <div class="result">
+                {% if output.status == "SUCCESS" %}
+                    <strong>
+                        {% if output.trust_score < 60 %}
+                            <span style="color: red; font-size: 1.25rem">{{output.url}} apperars to be a Phishing URL</span>
+                        {% else %}
+                            <span style="color: green; font-size: 1.25rem">{{output.url}} is a Legitimate URL</span>
+                        {% endif %}
+                    </strong>
+                {% endif %}
+
+                {% if output.msg is defined %}
+                    <br>
+                    <span style="color: rgb(255, 255, 0); font-size: 1.25rem">{{output.msg}}</span>
+                {% endif %}
+
+                {% if output.response_status != False %}
+                    <!-- <br><br>(External scripts are disabled for your safety.) -->
+                {% else %}
+                    <br><br>
+                    Can not access this page at the moment.
+                {% endif %}
+
+                <br><br><br>
+            </div>
+        {% endif %}
+    </div>
+    
+{% endblock %}
